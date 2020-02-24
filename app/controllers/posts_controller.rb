@@ -1,10 +1,10 @@
 class PostsController < ApplicationController
+	before_action :find_post, only: [:show, :edit, :update]
 	def index
 		@posts = Post.all
 	end
 
 	def show
-		@post = Post.find(params[:id])
 	end
 
 	def new
@@ -12,7 +12,9 @@ class PostsController < ApplicationController
 	end
 
 	def create
-	  @post = Post.new
+	  # @post = Post.new(post_params(:title, :description))
+	  #not sure why the above line of code won't work?
+      @post = Post.new
 	  @post.title = params[:title]
 	  @post.description = params[:description]
 	  @post.save
@@ -20,12 +22,20 @@ class PostsController < ApplicationController
 	end
 
 	def edit
-		@post = Post.find(params[:id])
 	end
 
 	def update
-	  @post = Post.find(params[:id])
-	  @post.update(title: params[:title], description: params[:description])
+	  @post.update(post_params(:title, :description))
 	  redirect_to post_path(@post)
+	end
+
+	private
+
+	def find_post
+	  @post = Post.find(params[:id])
+	end
+
+	def post_params(*args)
+	  params.require(:post).permit(*args)
 	end
 end
