@@ -38,7 +38,7 @@ group :development, :test do
   gem 'capybara'
   gem 'database_cleaner'
 end
-
+gem 'pry'
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
 
